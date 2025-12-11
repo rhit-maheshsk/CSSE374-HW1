@@ -30,6 +30,10 @@ public class Member {
         return requests;
     }
 
+    public void addRequest(Request request) {
+        requests.add(request);
+    }
+
     public boolean isInProgressStatus() {
         return inProgressStatus;
     }
@@ -39,7 +43,7 @@ public class Member {
         return this.inProgressStatus;
     }
 
-    private String generateReport() {
+    public String generateReport() {
         String report = "Member ID: " + ID + "\n" + "Name: " + name + "\n";
         report += "Song: " + song + "\n";
         report += "Requests:\n";

@@ -1,8 +1,9 @@
 public class Request {
-    private String emailAddress, CCNumber, sweetheartName;
+    private String emailAddress, sweetheartName;
+    private long CCNumber;
     private Member assignedMember;
 
-    public Request(String emailAddress, String CCNumber, String sweetheartName, Member assignedMember) {
+    public Request(String emailAddress, long CCNumber, String sweetheartName, Member assignedMember) {
         this.emailAddress = emailAddress;
         this.CCNumber = CCNumber;
         this.sweetheartName = sweetheartName;
@@ -13,7 +14,7 @@ public class Request {
         return emailAddress;
     }
 
-    public String getCreditCardNumber() {
+    public long getCreditCardNumber() {
         return CCNumber;
     }
 
