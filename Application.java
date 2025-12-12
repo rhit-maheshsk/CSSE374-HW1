@@ -1,15 +1,18 @@
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Application {
+
     public static ArrayList<Member> members = new ArrayList<>();
 
     public void createRequest(String emailAddress, Long CCNumber, String sweetheartName, Member assignedMember) {
         Request newRequest = new Request(emailAddress, CCNumber, sweetheartName, assignedMember);
         assignedMember.addRequest(newRequest);
     }
+
     public static void main(String[] args) {
         String[] songs = {
             "Can't Help Falling in Love",
@@ -28,8 +31,8 @@ public class Application {
         members.add(new Member(40337280, songs[5], "Zhou Mingrui"));
         members.add(new Member(92344932, songs[6], "Prissy Kitty Princess"));
         Scanner sc = new Scanner(System.in);
-        String EMAIL_REGEX = 
-        "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        String EMAIL_REGEX
+                = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         int action = 0;
         while (true) {
@@ -55,13 +58,13 @@ public class Application {
             break;
         }
         switch (action) {
-            case(1):
+            case (1):
                 int songID = 0;
                 String emailAddress = null;
                 long CCNumber = 0;
                 String sweetheartName = null;
                 Member assignedMember = null;
-                while (true) { 
+                while (true) {
                     System.out.println("""
                                         Order a song for Valentine’s Day...
                                         Select the song from this list:
@@ -71,24 +74,34 @@ public class Application {
                                         4 - "Perfect" by Ed Sheeran
                                         5 - "All of Me" by John Legend
                                         6 - "A Thousand Years" by Christina Perri
-                                        7 – "Make You Feel My Love" by Adele
-                                        Your choice (1 – 7):
+                                        7 - "Make You Feel My Love" by Adele
+                                        Your choice (1 - 7):
                                         """
-                                        );
+                    );
                     try {
                         songID = sc.nextInt();
                         if (songID < 1 || songID > 7) {
                             throw new Exception("Out of range");
                         }
                         songID -= 1;
+                        for (Member m : members) {
+                            if (m.getSong().equals(songs[songID])) {
+                                assignedMember = m;
+                                break;
+                            }
+                        }
+                        if (assignedMember.isInProgressStatus()) {
+                            System.out.println("Sorry, the member performing that song is currently busy and cannot take new requests. Please choose a different song.");
+                            continue;
+                        }
                     } catch (Exception e) {
                         System.out.println("Invalid input. Please enter a number between 1 and 7.");
                         continue;
                     }
-                    
+
                     System.out.println("Enter your email address: ");
                     try {
-                        emailAddress = sc.next();
+                        emailAddress = sc.nextLine();
                         Matcher matcher = pattern.matcher(emailAddress);
                         if (!matcher.matches()) {
                             throw new Exception();
@@ -110,7 +123,7 @@ public class Application {
                     }
                     System.out.println("Enter your sweetheart's name: ");
                     try {
-                        sweetheartName = sc.next();
+                        sweetheartName = sc.nextLine();
                         int numNames = sweetheartName.trim().split(" ").length;
                         if (numNames < 2 || numNames > 4 || sweetheartName.isBlank()) {
                             throw new Exception("Invalid number of names.");
@@ -121,80 +134,76 @@ public class Application {
                     }
                     break;
                 }
-                for (Member m : members) {
-                    if (m.getSong().equals(songs[songID])) {
-                        assignedMember = m;
-                        break;
-                    }
-                }
                 Request newRequest = new Request(emailAddress, CCNumber, sweetheartName, assignedMember);
                 assignedMember.addRequest(newRequest);
                 System.out.println("Done!");
-            break;
-            case(2):
-            int memberID = 0;
-            Member currentMember = null;
-            while (true) {
-                System.out.println("""
+                break;
+            case (2):
+                int memberID = 0;
+                Member currentMember = null;
+                while (true) {
+                    System.out.println("""
                                     Get a report of requests for your song...
                                     Enter your member ID number: 
                                 """);
-                try {
-                    memberID = sc.nextInt();
-                    for (Member m : members) {
-                        if (m.getID() == memberID) {
-                            currentMember = m;
-                            break;
+                    try {
+                        memberID = sc.nextInt();
+                        for (Member m : members) {
+                            if (m.getID() == memberID) {
+                                currentMember = m;
+                                break;
+                            }
+                            throw new Exception("Member not found.");
                         }
-                        throw new Exception("Member not found.");
+                    } catch (Exception e) {
+                        System.out.println("Invalid member ID. Please try again.");
+                        continue;
                     }
-                } catch (Exception e) {
-                    System.out.println("Invalid member ID. Please try again.");
-                    continue;
+                    break;
                 }
+                System.out.println("Look for an email with a list of all the sweethearts to sing to!");
+                System.out.println(currentMember.generateReport());
                 break;
-            }
-            System.out.println("Look for an email with a list of all the sweethearts to sing to!");
-            System.out.println(currentMember.generateReport());
-            break;
-            case(3):
-            memberID = 0;
-            currentMember = null;
-            while (true) {
-                System.out.println("""
+            case (3):
+                memberID = 0;
+                currentMember = null;
+                while (true) {
+                    System.out.println("""
                                     Report back that your songs are done...
                                     Enter your member ID number: 
                                 """);
-                try {
-                    memberID = sc.nextInt();
-                    for (Member m : members) {
-                        if (m.getID() == memberID) {
-                            currentMember = m;
-                            break;
+                    try {
+                        memberID = sc.nextInt();
+                        for (Member m : members) {
+                            if (m.getID() == memberID) {
+                                currentMember = m;
+                                break;
+                            }
+                            throw new Exception("Member not found.");
                         }
-                        throw new Exception("Member not found.");
+                    } catch (Exception e) {
+                        System.out.println("Invalid member ID. Please try again.");
+                        continue;
                     }
-                } catch (Exception e) {
-                    System.out.println("Invalid member ID. Please try again.");
-                    continue;
+                    break;
+                }
+                System.out.println("Your customers will be charged and notified!");
+                System.out.println(currentMember.completeRequests());
+                break;
+            case (4):
+                System.out.println("Admin - Data");
+                for (Member m : members) {
+                    System.out.println(m.generateReport());
                 }
                 break;
-            }
-            System.out.println("Your customers will be charged and notified!");
-            System.out.println(currentMember.completeRequests());
-            break;
-            case(4):
-            
-            break;
-            case(5):
+            case (5):
                 System.out.println("Exiting the system. Goodbye!");
 
-            break;
+                break;
             default:
-                //error handling
+            //error handling
         }
         sc.close();
     }
 
-    
 }
