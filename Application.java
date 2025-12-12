@@ -80,6 +80,7 @@ public class Application {
                     );
                     try {
                         songID = sc.nextInt();
+                        sc.nextLine();
                         if (songID < 1 || songID > 7) {
                             throw new Exception("Out of range");
                         }
@@ -114,6 +115,7 @@ public class Application {
                     System.out.println("Enter your credit card number: ");
                     try {
                         CCNumber = sc.nextLong();
+                        sc.nextLine();
                         if (String.valueOf(CCNumber).length() != 16) {
                             throw new Exception("Invalid length");
                         }
