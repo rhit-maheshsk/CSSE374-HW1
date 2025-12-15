@@ -35,12 +35,24 @@ public class Member {
     }
 
     public boolean isInProgressStatus() {
-        return inProgressStatus;
+        return this.inProgressStatus;
     }
 
-    public boolean setInProgressStatus(boolean status) {
+    public void setInProgressStatus(boolean status) {
         this.inProgressStatus = status;
-        return this.inProgressStatus;
+    }
+
+    public String generateAdminReport() {
+        String report = "Member ID: " + ID + "\n" + "Name: " + name + "\n";
+        report += "Song: " + song + "\n";
+        report += "Requests:\n";
+        for (Request req : requests) {
+            report += req.getSweetheartName() + "\n";
+        }
+        if (requests.isEmpty()) {
+            report += "No requests assigned.\n";
+        }
+        return report;
     }
 
     public String generateReport() {
@@ -50,16 +62,25 @@ public class Member {
         for (Request req : requests) {
             report += req.getSweetheartName() + "\n";
         }
-        inProgressStatus = true;
+        if (requests.isEmpty()) {
+            report += "No requests assigned.\n";
+        }
+        else {
+            setInProgressStatus(true);
+        }
         return report;
     }
 
     public String completeRequests() {
+        if (this.inProgressStatus == false) {
+            return "No requests in progress to complete. Check the report of requests first before completing.";
+        }
         String allEmails = "";
         for (Request req : requests) {
             allEmails += req.completeRequest() + "\n";
         }
-        inProgressStatus = false;
+        requests.clear();
+        setInProgressStatus(false);
         return allEmails;
     }
 }

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,6 +8,7 @@ import java.util.regex.Pattern;
 public class Application {
 
     public static ArrayList<Member> members = new ArrayList<>();
+    public static ArrayList<Member> request = new ArrayList<>();
 
     public void createRequest(String emailAddress, Long CCNumber, String sweetheartName, Member assignedMember) {
         Request newRequest = new Request(emailAddress, CCNumber, sweetheartName, assignedMember);
@@ -37,27 +39,27 @@ public class Application {
         int action = 0;
         while (true) {
             System.out.println("""
-                                Welcome to the Serenaders Music Club Valentines Song System!
-                                Select the action to do:
-                                1 - Customers - Order a song for Valentines Day
-                                2 - Club members - Get a report of requests for your song
-                                3 - Club members - Report back that your songs are done
-                                4 - Admin - Show data for all club members
-                                5 - Exit
-                                Enter 1, 2, 3 or 4: 
+                            Welcome to the Serenaders Music Club Valentines Song System!
+                            Select the action to do:
+                            1 - Customers - Order a song for Valentines Day
+                            2 - Club members - Get a report of requests for your song
+                            3 - Club members - Report back that your songs are done
+                            4 - Admin - Show data for all club members
+                            5 - Exit
+                            Enter 1, 2, 3, 4 or 5: 
                             """);
             try {
-                action = sc.nextInt();
+                String input = sc.nextLine();
+                action = Integer.parseInt(input);
                 if (action < 1 || action > 5) {
                     throw new Exception("Out of range");
                 }
             } catch (Exception e) {
-                System.out.println("Invalid input. Please enter 1, 2, 3, or 4.\n");
+                System.out.println("Invalid input. Please enter 1, 2, 3, 4 or 5.\n");
                 continue;
             }
-            break;
-        }
-        switch (action) {
+
+            switch (action) {
             case (1):
                 int songID = 0;
                 String emailAddress = null;
@@ -79,8 +81,8 @@ public class Application {
                                         """
                     );
                     try {
-                        songID = sc.nextInt();
-                        sc.nextLine();
+                        String input = sc.nextLine();
+                        songID = Integer.parseInt(input);
                         if (songID < 1 || songID > 7) {
                             throw new Exception("Out of range");
                         }
@@ -99,7 +101,9 @@ public class Application {
                         System.out.println("Invalid input. Please enter a number between 1 and 7.");
                         continue;
                     }
-
+                    break;
+                }
+                while (true) {
                     System.out.println("Enter your email address: ");
                     try {
                         emailAddress = sc.nextLine();
@@ -111,11 +115,13 @@ public class Application {
                         System.out.println("Invalid email format. Please enter a valid email address.");
                         continue;
                     }
-
+                    break;
+                }
+                while (true) {
                     System.out.println("Enter your credit card number: ");
                     try {
-                        CCNumber = sc.nextLong();
-                        sc.nextLine();
+                        String input = sc.nextLine();
+                        CCNumber = Long.parseLong(input);
                         if (String.valueOf(CCNumber).length() != 16) {
                             throw new Exception("Invalid length");
                         }
@@ -123,6 +129,9 @@ public class Application {
                         System.out.println("Invalid credit card number. Please enter a 16-digit number.");
                         continue;
                     }
+                    break;
+                }
+                while (true) {
                     System.out.println("Enter your sweetheart's name: ");
                     try {
                         sweetheartName = sc.nextLine();
@@ -149,7 +158,8 @@ public class Application {
                                     Enter your member ID number: 
                                 """);
                     try {
-                        memberID = sc.nextInt();
+                        String input = sc.nextLine();
+                        memberID = Integer.parseInt(input);
                         for (Member m : members) {
                             if (m.getID() == memberID) {
                                 currentMember = m;
@@ -175,7 +185,8 @@ public class Application {
                                     Enter your member ID number: 
                                 """);
                     try {
-                        memberID = sc.nextInt();
+                        String input = sc.nextLine();
+                        memberID = Integer.parseInt(input);
                         for (Member m : members) {
                             if (m.getID() == memberID) {
                                 currentMember = m;
@@ -195,17 +206,15 @@ public class Application {
             case (4):
                 System.out.println("Admin - Data");
                 for (Member m : members) {
-                    System.out.println(m.generateReport());
+                    System.out.println(m.generateAdminReport());
                 }
                 break;
-            case (5):
+            }
+            if (action == 5) {
                 System.out.println("Exiting the system. Goodbye!");
-
-                break;
-            default:
-            //error handling
+                sc.close();
+                break;   
+            }
         }
-        sc.close();
     }
-
 }
