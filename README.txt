@@ -1,1 +1,11 @@
-Just a read me file.
+# Program Usage
+- When the program starts, a menu with numbered options is displayed.
+- Enter 1 to order a Valentine’s Day song as a customer.
+- Enter 2 for a club member to view a report of assigned requests (member ID required).
+- Enter 3 for a club member to mark all assigned requests as completed (member ID required).
+- Enter 4 for the admin to view reports for all club members.
+- Enter 5 to exit the program.
+- All input is provided through the console, and prompts guide each step.
+- Member IDs are preloaded in initMembers() (e.g., 55066592, 45709180, etc.).
+- Requests are preloaded in initRequests(), use 4 to view pre-assigned requests for each member (if any)
+- Data stored purely in-memory and not persistent

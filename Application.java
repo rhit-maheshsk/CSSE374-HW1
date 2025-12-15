@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 public class Application {
 
     public static ArrayList<Member> members = new ArrayList<>();
-    public static ArrayList<Request> requests = new ArrayList<>();
-
 
     private static final String[] SONGS = {
             "Can't Help Falling in Love",
@@ -18,10 +16,6 @@ public class Application {
             "A Thousand Years",
             "Make You Feel My Love"
     };
-
-    private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     public static void main(String[] args) {
         initMembers();
@@ -43,7 +37,8 @@ public class Application {
             int action;
             try {
                 action = Integer.parseInt(sc.nextLine());
-                if (action < 1 || action > 5) throw new Exception();
+                if (action < 1 || action > 5)
+                    throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter 1, 2, 3, 4 or 5.\n");
                 continue;
@@ -71,6 +66,8 @@ public class Application {
         long CCNumber;
         String sweetheartName;
         Member assignedMember = null;
+        String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
         while (true) {
             System.out.println("""
@@ -87,7 +84,8 @@ public class Application {
                     """);
             try {
                 songID = Integer.parseInt(sc.nextLine());
-                if (songID < 1 || songID > 7) throw new Exception();
+                if (songID < 1 || songID > 7)
+                    throw new Exception();
                 songID--;
 
                 for (Member m : members) {
@@ -111,7 +109,8 @@ public class Application {
             System.out.println("Enter your email address: ");
             emailAddress = sc.nextLine();
             Matcher matcher = EMAIL_PATTERN.matcher(emailAddress);
-            if (matcher.matches()) break;
+            if (matcher.matches())
+                break;
             System.out.println("Invalid email format. Please enter a valid email address.");
         }
 
@@ -119,7 +118,8 @@ public class Application {
             System.out.println("Enter your credit card number: ");
             try {
                 CCNumber = Long.parseLong(sc.nextLine());
-                if (String.valueOf(CCNumber).length() != 16) throw new Exception();
+                if (String.valueOf(CCNumber).length() != 16)
+                    throw new Exception();
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid credit card number. Please enter a 16-digit number.");
@@ -130,13 +130,13 @@ public class Application {
             System.out.println("Enter your sweetheart's name: ");
             sweetheartName = sc.nextLine();
             int numNames = sweetheartName.trim().split(" ").length;
-            if (!sweetheartName.isBlank() && numNames >= 2 && numNames <= 4) break;
+            if (!sweetheartName.isBlank() && numNames >= 2 && numNames <= 4)
+                break;
             System.out.println("Invalid name. Please enter a full name with 2 to 4 words.");
         }
 
         Request newRequest = new Request(emailAddress, CCNumber, sweetheartName, assignedMember);
         assignedMember.addRequest(newRequest);
-        requests.add(newRequest);
         System.out.println("Done!");
     }
 
@@ -166,7 +166,8 @@ public class Application {
             try {
                 int memberID = Integer.parseInt(sc.nextLine());
                 for (Member m : members) {
-                    if (m.getID() == memberID) return m;
+                    if (m.getID() == memberID)
+                        return m;
                 }
                 throw new Exception();
             } catch (Exception e) {
@@ -190,18 +191,13 @@ public class Application {
                 "test1@email.com",
                 1234567812345678L,
                 "Jane Doe",
-                members.get(4)
-        );
+                members.get(4));
 
         Request r2 = new Request(
                 "test2@email.com",
                 8765432187654321L,
                 "John Smith",
-                members.get(2)
-        );
-
-        requests.add(r1);
-        requests.add(r2);
+                members.get(2));
 
         members.get(4).addRequest(r1);
         members.get(2).addRequest(r2);

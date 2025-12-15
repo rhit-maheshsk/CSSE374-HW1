@@ -26,8 +26,14 @@ public class Request {
         return assignedMember;
     }
 
+    @Override
+    public String toString() {
+        return "Sweetheart: " + sweetheartName + ", Email: " + emailAddress;
+    }
+
     public String completeRequest() {
-        String email = "Email sent to: " + emailAddress + "\nContent:\nRequest completed for " + sweetheartName + " by member " + assignedMember.getName() + "\nCharging credit card.\n";
+        String email = "Email sent to: " + emailAddress + "\nContent:\nRequest completed for " + sweetheartName
+                + " by member " + assignedMember.getName() + "\nCharging credit card.\n";
         return email;
     }
 }

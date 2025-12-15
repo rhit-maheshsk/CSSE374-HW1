@@ -47,7 +47,7 @@ public class Member {
         report += "Song: " + song + "\n";
         report += "Requests:\n";
         for (Request req : requests) {
-            report += req.getSweetheartName() + "\n";
+            report += req + "\n";
         }
         if (requests.isEmpty()) {
             report += "No requests assigned.\n";
@@ -60,12 +60,11 @@ public class Member {
         report += "Song: " + song + "\n";
         report += "Requests:\n";
         for (Request req : requests) {
-            report += req.getSweetheartName() + "\n";
+            report += req + "\n";
         }
         if (requests.isEmpty()) {
             report += "No requests assigned.\n";
-        }
-        else {
+        } else {
             setInProgressStatus(true);
         }
         return report;
